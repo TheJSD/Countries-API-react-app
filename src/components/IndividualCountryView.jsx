@@ -33,6 +33,16 @@ const IndividualCountryView = ({allCountries, selectedCountry, favouriteCountrie
   }
 
 
+  const checkMultipleTimezones = (country) => {
+    let text = ""
+  if (country.timezones.length > 1) {
+    text = "Timezones"
+    } else {
+    text = "Timezone"
+  }
+  return text
+  }
+
   return (
     <>
       <h1>{country.name.official}</h1>
@@ -43,7 +53,7 @@ const IndividualCountryView = ({allCountries, selectedCountry, favouriteCountrie
       ) : (
         <button onClick={removeFromFavourites}>Remove from Favourites</button>)}
       <p>Population: {country.population}</p>
-      <p>Timezones:</p> {country.timezones.map(timezone => <p>{timezone}</p>)}
+      <p>{checkMultipleTimezones(country)}:</p> {country.timezones.map(timezone => <p>{timezone}</p>)}
     </>
   )
 }
