@@ -12,6 +12,8 @@ const CountriesContainer = () => {
   const [selectedCountry, setSelectedCountry] = useState("")
   const [favouriteCountries, setFavouriteCountries] = useState([])
 
+  // States for Search Function:
+  const [searchFilter, setSearchFilter] = useState("")
 
   const convertCountriesArrayToObject = function (array) {
     let newAllCountriesObject = {}
@@ -44,8 +46,20 @@ const CountriesContainer = () => {
 
   const countryItems = function (selectedCountriesObject) {
     const countryItems = Object.values(selectedCountriesObject);
-    return countryItems
+    if (searchFilter == "") {
+      return countryItems
+    } else {
+      const filteredItems = []
+      countryItems.forEach((country) => {
+        if (country.name.official.toLowerCase().indexOf(searchFilter.toLowerCase()) != -1) {
+          filteredItems.push(country)
+        }})
+      return filteredItems
+      }
   }
+
+
+
 
   return (
     <>
@@ -61,7 +75,10 @@ const CountriesContainer = () => {
         <ListCountries
         allCountries={allCountries}
         selectCountry={selectCountry} 
-        countryItems= {countryItems(allCountries)}/>
+        countryItems= {countryItems(allCountries)}
+        searchFilter={searchFilter}
+        setSearchFilter={setSearchFilter}
+        />
     </>
       ) : (
         <>
