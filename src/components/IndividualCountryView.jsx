@@ -7,12 +7,22 @@ const IndividualCountryView = ({allCountries, selectedCountry, favouriteCountrie
 
   const [isFavourited, setIsFavourited] = useState("")
 
+  const country = allCountries[selectedCountry]
+
   useEffect(() => {
     setIsFavourited(favouriteCountries.some(country => country.id == selectedCountry))
   }, [favouriteCountries])
   
 
-  const country = allCountries[selectedCountry]
+  useEffect(() => {
+  const map = L.map('map').setView([(country.latlng[0]), (country.latlng[1])], 13);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '© OpenStreetMap'
+  }).addTo(map);
+}, [])
+
+
 
   const addToFavourites = () => {
     const countryToAdd = {id: selectedCountry, ...country,}
@@ -53,9 +63,11 @@ const IndividualCountryView = ({allCountries, selectedCountry, favouriteCountrie
       ) : (
         <button onClick={removeFromFavourites}>Remove from Favourites</button>)}
       <p>Population: {country.population}</p>
+      <div id="map"></div>
       <p>{checkMultipleTimezones(country)}:</p> {country.timezones.map(timezone => <p>{timezone}</p>)}
     </>
   )
 }
+
 
 export default IndividualCountryView
