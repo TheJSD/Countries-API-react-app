@@ -12,10 +12,25 @@ const CountriesContainer = () => {
   const [selectedCountry, setSelectedCountry] = useState("")
   const [favouriteCountries, setFavouriteCountries] = useState([])
 
-  useEffect(() => {
+
+  const convertCountriesArrayToObject = function (array) {
+    let newAllCountriesObject = {}
+    for (let country of array) {
+      const newKey = country.cca3
+      newAllCountriesObject[newKey] = country
+      // newAllCountriesObject[key] = [country]
+      // console.log(newAllCountriesObject)
+    }
+    setAllCountries(newAllCountriesObject)
+  }
+
+  useEffect( () => {
     fetch("https://restcountries.com/v3.1/all")
     .then((res) => res.json())
-    .then((data) => setAllCountries(data))
+    .then((data) => convertCountriesArrayToObject(data));
+  
+
+
   
     return () => {
       
@@ -25,7 +40,11 @@ const CountriesContainer = () => {
   const selectCountry = (evt) => {
     console.log(evt.target)
     setSelectedCountry(evt.target.value)
+  }
 
+  const countryItems = function (selectedCountriesObject) {
+    const countryItems = Object.values(selectedCountriesObject);
+    return countryItems
   }
 
   return (
@@ -39,7 +58,10 @@ const CountriesContainer = () => {
         <>
       {selectedCountry == "" ? (
       <>
-        <ListCountries allCountries={allCountries} selectCountry={selectCountry}/>
+        <ListCountries
+        allCountries={allCountries}
+        selectCountry={selectCountry} 
+        countryItems= {countryItems(allCountries)}/>
     </>
       ) : (
         <>
