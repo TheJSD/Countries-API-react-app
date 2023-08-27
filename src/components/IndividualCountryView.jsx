@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 
 
-const IndividualCountryView = ({allCountries, selectedCountry, favouriteCountries, setFavouriteCountries}) => {
+const IndividualCountryView = ({allCountries, selectCountry, selectedCountry, favouriteCountries, setFavouriteCountries}) => {
 
   const [isFavourited, setIsFavourited] = useState("")
 
@@ -15,7 +15,7 @@ const IndividualCountryView = ({allCountries, selectedCountry, favouriteCountrie
   
 
   useEffect(() => {
-  const map = L.map('map').setView([(country.latlng[0]), (country.latlng[1])], 13);
+    let map = L.map('map').setView([(country.latlng[0]), (country.latlng[1])], 13);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '© OpenStreetMap'
@@ -53,6 +53,7 @@ const IndividualCountryView = ({allCountries, selectedCountry, favouriteCountrie
   return text
   }
 
+
   return (
     <>
       <h1>{country.name.official}</h1>
@@ -65,6 +66,20 @@ const IndividualCountryView = ({allCountries, selectedCountry, favouriteCountrie
       <p>Population: {country.population}</p>
       <div id="map"></div>
       <p>{checkMultipleTimezones(country)}:</p> {country.timezones.map(timezone => <p>{timezone}</p>)}
+
+      <h2>Neighbouring Countries:</h2>
+      <ul>
+        {country.borders.map((countryCode) => {
+          const borderedCountry = allCountries[countryCode]
+          return (
+            <li>
+              {/* <button onClick={selectCountry} value={countryCode}> */}
+              {borderedCountry.name.official}
+              {/* </button> */}
+            </li>
+          )
+        })}
+      </ul>
     </>
   )
 }

@@ -86,6 +86,7 @@ const CountriesContainer = () => {
             selectedCountry={selectedCountry}
             favouriteCountries={favouriteCountries}
             setFavouriteCountries={setFavouriteCountries}
+            selectCountry={selectCountry}
           />
         </>
         )}
