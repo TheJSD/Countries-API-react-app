@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Header from '../components/Header'
 import ListCountries from '../components/ListCountries'
 import IndividualCountryView from '../components/IndividualCountryView'
-import ListFavouriteCountries from '../components/ListFavouriteCountries'
 
 
 const CountriesContainer = () => {
@@ -45,7 +44,12 @@ const CountriesContainer = () => {
   }
 
   const countryItems = function (selectedCountriesObject) {
-    const countryItems = Object.values(selectedCountriesObject);
+    let countryItems = []
+    if (selectedCountry == "favourites") {
+      countryItems = favouriteCountries
+    } else {
+    countryItems = Object.values(selectedCountriesObject);
+    }
     if (searchFilter == "") {
       return countryItems
     } else {
@@ -65,12 +69,7 @@ const CountriesContainer = () => {
     <>
       <Header selectCountry={selectCountry}/>
       
-
-      {selectedCountry == "favourites" ? (
-        <ListFavouriteCountries selectCountry={selectCountry} favouriteCountries={favouriteCountries}/>
-        ) : ( 
-        <>
-      {selectedCountry == "" ? (
+      {(selectedCountry == "" || selectedCountry == "favourites") ? (
       <>
         <ListCountries
         allCountries={allCountries}
@@ -90,8 +89,6 @@ const CountriesContainer = () => {
           />
         </>
         )}
-      </>
-      )}
 
     </>
   )
